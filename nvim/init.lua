@@ -1,1 +1,2 @@
-#hello world
+require("config.lazy")
+require("config.vim-options")
