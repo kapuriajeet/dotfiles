@@ -9,7 +9,6 @@ return {
         auto_install = false,
         ensure_installed = {
           "bash",
-          "ruby",
           "html",
           "css",
           "scss",
