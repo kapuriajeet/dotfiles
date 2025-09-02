@@ -1,4 +1,5 @@
 return {
+  -- Mason for managing LSP servers
   {
     "mason-org/mason.nvim",
     lazy = false,
@@ -6,41 +7,46 @@ return {
       require("mason").setup()
     end,
   },
+
+  -- Mason bridge for ensuring servers are installed
   {
     "mason-org/mason-lspconfig.nvim",
     lazy = false,
     opts = {
-      ensure_installed = { "pyright" },
+      ensure_installed = {
+        "lua_ls",
+        "pyright",
+        "ts_ls",
+        "html",
+        "cssls",
+        "tailwindcss",
+        "emmet_ls",
+      },
       auto_install = true,
     },
   },
+
+  -- Blink completion
   {
-    "neovim/nvim-lspconfig",
-    lazy = false,
-    config = function()
-      local cmp_nvim_lsp = require("cmp_nvim_lsp")
-      local capabilities = vim.tbl_deep_extend(
-        "force",
-        {},
-        vim.lsp.protocol.make_client_capabilities(),
-        cmp_nvim_lsp.default_capabilities()
-      )
-
-      local lspconfig = require("lspconfig")
-
-      lspconfig.tailwindcss.setup({
-        capabilities = capabilities
-      })
-      lspconfig.lua_ls.setup({
-        capabilities = capabilities
-      })
-
-      vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
-      vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
-      vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, {})
-      vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {})
-      vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, {})
-      vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, {})
-    end,
+    "saghen/blink.cmp",
+    version = "1.*",
+    event = "InsertEnter",
+    opts = {
+      fuzzy = {
+        implementation = "prefer_rust",
+      },
+      keymap = {
+        ["<Tab>"] = { "select_next", "fallback" },
+        ["<S-Tab>"] = { "select_prev", "fallback" },
+        ["<CR>"] = { "accept", "fallback" },
+        ["<C-e>"] = { "cancel", "fallback" },
+      },
+      completion = {
+        menu = { border = "rounded" },
+      },
+      sources = {
+        default = { "lsp", "path", "buffer" },
+      },
+    },
   },
 }
