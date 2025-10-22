@@ -53,7 +53,22 @@ vim.api.nvim_create_autocmd("LspAttach", {
 -- Diagnostic configuration
 vim.diagnostic.config({
 	virtual_text = true,
-	signs = true,
+	signs = {
+		active = true, -- Enable or disable signs
+		text = {
+			[vim.diagnostic.severity.ERROR] = " ", -- Error sign
+			[vim.diagnostic.severity.WARN] = " ", -- Warning sign
+			[vim.diagnostic.severity.HINT] = " ", -- Hint sign
+			[vim.diagnostic.severity.INFO] = " ", -- Info sign
+		},
+		-- Optional: highlight the line number column
+		numhl = {
+			[vim.diagnostic.severity.ERROR] = "DiagnosticSignError",
+			[vim.diagnostic.severity.WARN] = "DiagnosticSignWarn",
+			[vim.diagnostic.severity.INFO] = "DiagnosticSignInfo",
+			[vim.diagnostic.severity.HINT] = "DiagnosticSignHint",
+		},
+	},
 	underline = true,
 	update_in_insert = false,
 	severity_sort = true,
